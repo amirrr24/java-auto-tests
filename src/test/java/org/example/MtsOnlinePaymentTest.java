@@ -34,7 +34,6 @@ public class MtsOnlinePaymentTest {
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         driver.get("https://www.mts.by");
 
-        // Закрываем cookie-баннер
         try {
             Thread.sleep(2000);
             WebElement cookieButton = wait.until(ExpectedConditions.elementToBeClickable(
@@ -46,7 +45,6 @@ public class MtsOnlinePaymentTest {
             System.out.println("Cookie-баннер не появился");
         }
 
-        // Небольшая пауза после закрытия баннера
         try { Thread.sleep(1000); } catch (InterruptedException e) {}
     }
 
@@ -61,11 +59,9 @@ public class MtsOnlinePaymentTest {
 
     @Test
     void testBlockTitle() {
-        // Вариант 1: ищем заголовок по части текста
         List<WebElement> titles = driver.findElements(By.xpath("//*[contains(text(), 'Онлайн пополнение')]"));
 
         if (titles.isEmpty()) {
-            // Вариант 2: ищем по классу (примерный локатор)
             titles = driver.findElements(By.xpath("//h3[contains(@class, 'title')]"));
         }
 
@@ -82,7 +78,6 @@ public class MtsOnlinePaymentTest {
 
     @Test
     void testPaymentLogos() {
-        // Ищем любые изображения на странице
         List<WebElement> allImages = driver.findElements(By.tagName("img"));
 
         String[] expectedLogos = {"Visa", "Mastercard", "Белкарт", "Мир"};
@@ -127,19 +122,16 @@ public class MtsOnlinePaymentTest {
 
     @Test
     void testFillFormAndContinue() throws InterruptedException {
-        // Ищем поле для ввода номера телефона
         WebElement phoneInput = driver.findElement(By.xpath("//input[contains(@placeholder, 'Номер') or contains(@name, 'phone')]"));
         phoneInput.clear();
         phoneInput.sendKeys("297777777");
         System.out.println("Введён номер: 297777777");
 
-        // Ищем поле для ввода суммы
         WebElement sumInput = driver.findElement(By.xpath("//input[contains(@placeholder, 'Сумма') or contains(@name, 'sum')]"));
         sumInput.clear();
         sumInput.sendKeys("5");
         System.out.println("Введена сумма: 5");
 
-        // Ищем кнопку "Продолжить"
         WebElement continueButton = driver.findElement(By.xpath("//button[contains(text(), 'Продолжить')]"));
         continueButton.click();
         System.out.println("Нажата кнопка 'Продолжить'");
