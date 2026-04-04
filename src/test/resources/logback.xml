@@ -1,0 +1,5 @@
+<configuration>
+    <logger name="org.openqa.selenium" level="ERROR"/>
+    <logger name="io.github.bonigarcia" level="ERROR"/>
+    <root level="ERROR"/>
+</configuration>
