@@ -12,7 +12,6 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class PaymentPage {
     private final WebDriver driver;
@@ -46,18 +45,6 @@ public class PaymentPage {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         PageFactory.initElements(driver, this);
-    }
-
-    public void switchToNewWindow() {
-        String originalWindow = driver.getWindowHandle();
-        Set<String> windows = driver.getWindowHandles();
-        for (String window : windows) {
-            if (!window.equals(originalWindow)) {
-                driver.switchTo().window(window);
-                break;
-            }
-        }
-        System.out.println("Переключились на новое окно: " + driver.getCurrentUrl());
     }
 
     public PaymentPage closeCookieBanner() {
@@ -124,13 +111,10 @@ public class PaymentPage {
     public boolean isPhoneDisplayed(String expectedPhone) {
         try { Thread.sleep(2000); } catch (InterruptedException e) {}
         try {
-            WebElement phoneElement = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("/html/body/app-root/div/div/div/app-payment-container/section/div/div/div[2]/span")));
+            WebElement phoneElement = driver.findElement(By.xpath("/html/body/app-root/div/div/div/app-payment-container/section/div/div/div[2]/span"));
             String actualText = phoneElement.getText();
-            System.out.println("Текст с номером: '" + actualText + "'");
             return actualText.contains("375" + expectedPhone);
         } catch (Exception e) {
-            System.out.println("Ошибка: " + e.getMessage());
             return false;
         }
     }
